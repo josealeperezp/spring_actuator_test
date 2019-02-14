@@ -1,4 +1,4 @@
-package hello;
+package hello.service.bean;
 
 public class Greeting {
 

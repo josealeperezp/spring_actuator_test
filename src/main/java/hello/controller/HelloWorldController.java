@@ -1,18 +1,16 @@
-package hello;
+package hello.controller;
 
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import hello.service.ServiceTest;
+import hello.service.bean.Greeting;
 import io.micrometer.core.annotation.Timed;
-import io.micrometer.core.instrument.Measurement;
-import io.micrometer.core.instrument.Meter;
-import io.micrometer.core.instrument.MeterRegistry;
 
 @Controller
 public class HelloWorldController {
@@ -22,10 +20,6 @@ public class HelloWorldController {
 
 	@Autowired
 	private ServiceTest serviceTest;
-	
-	@Autowired
-	@Qualifier("simpleMeterRegistry")
-	private MeterRegistry simpleMeterRegistry;
 
     @GetMapping("/hello-world")
     @ResponseBody
@@ -33,17 +27,6 @@ public class HelloWorldController {
     public Greeting sayHello(@RequestParam(name="name", required=false, defaultValue="Stranger") String name) {
     	serviceTest.test();
     	serviceTest.test2();
-    	for(Meter meter : simpleMeterRegistry.getMeters()) {
-    		if("servicetest.test2".equals(meter.getId().getName())) {
-    			System.out.println(meter.getId());
-    			for(Measurement measurement : meter.measure()) {
-    				System.out.println(
-    						measurement.getStatistic().name() + " : " +
-    						measurement.getValue()
-    						);
-    			}
-    		}
-    	}
     	
         return new Greeting(counter.incrementAndGet(), String.format(template, name));
     }
