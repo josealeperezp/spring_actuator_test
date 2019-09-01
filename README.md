@@ -1,8 +1,22 @@
-# spring_actuator_test
-Instrucciones para probar programa
+# Returnly Java Exercise (Solution)
 
-1. Ejecutar programa.
+## Response structure
 
-2. Hacer una petición a localhost:9000/hello-world. Esto demorará unos segundos. Es intencional esta demora ya que se ha colocado un sleep en el código para simular un retardo en la respuesta y esto quede reflejado en Spring Actuator.
+When the invocation is made, a JSON is got as response with the following fields:
 
-3. Existe un demonio que cada 10 segundos consulta por métricas asociadas al endpoint previamente ejecutado. Tan pronto como termine al menos una invocación del endpoint anterior, se mostrarán estadísticas de los métodos usados en la resolución de la respuesta.
+- totalOrders: Total number of orders
+- uniqueUsers: Number of unique customers
+- mostFrequentlyOrderedItemName: Most frequently ordered item
+- leasFrequentlyOrderedItemName: Least frequently ordered item
+- medianOrderValue: Median order value
+- orderShortestInterval: Shortest interval between any two consecutive orders placed by the same customer
+
+## Build Docker images
+
+In order to build an image containing the deployment, create first the image with:
+
+`docker build -t returnly_assessment .`
+
+Then create and deploy a container with:
+
+`docker run -d -p 8080:8080 --name returnly_deployment returnly_assessment`
